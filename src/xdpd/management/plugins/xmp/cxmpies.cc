@@ -128,11 +128,9 @@ cxmpies::map_and_insert(
 	} break;
 	case XMPIET_DPID: {
 		xmpmap[XMPIET_DPID] = new cxmpie_dpid(xmpie);
-
 	} break;
 	case XMPIET_PORTINFO: {
 		xmpmap[XMPIET_PORTINFO] = new cxmpie_portinfo(xmpie);
-
 	} break;
 	case XMPIET_MULTIPART: {
 		xmpmap[XMPIET_MULTIPART] = new cxmpie_multipart(xmpie);
@@ -140,6 +138,9 @@ cxmpies::map_and_insert(
 	}
 	case XMPIET_LSINAME: {
 		xmpmap[XMPIET_LSINAME] = new cxmpie_name(xmpie);
+	} break;
+	case XMPIET_LSIINFO: {
+		xmpmap[XMPIET_LSIINFO] = new cxmpie_lsiinfo(xmpie);
 	} break;
 	default: {
 		xmpmap[xmpie.get_type()] = new cxmpie(xmpie);
@@ -375,6 +376,46 @@ cxmpies::drop_ie_lsiname()
 	delete xmpmap[XMPIET_LSINAME];
 	xmpmap.erase(XMPIET_LSINAME);
 }
+
+
+cxmpie_lsiinfo&
+cxmpies::add_ie_lsiinfo()
+{
+	if (xmpmap.find(XMPIET_LSIINFO) != xmpmap.end()) {
+		delete xmpmap[XMPIET_LSIINFO];
+	}
+	xmpmap[XMPIET_LSIINFO] = new cxmpie_lsiinfo();
+	return *(dynamic_cast<cxmpie_lsiinfo*>( xmpmap[XMPIET_LSIINFO] ));
+}
+
+cxmpie_lsiinfo&
+cxmpies::set_ie_lsiinfo()
+{
+	if (xmpmap.find(XMPIET_LSIINFO) == xmpmap.end()) {
+		xmpmap[XMPIET_LSIINFO] = new cxmpie_lsiinfo();
+	}
+	return *(dynamic_cast<cxmpie_lsiinfo*>( xmpmap[XMPIET_LSIINFO] ));
+}
+
+cxmpie_lsiinfo const&
+cxmpies::get_ie_lsiinfo() const
+{
+	if (xmpmap.find(XMPIET_LSIINFO) == xmpmap.end()) {
+		throw eXmpIEsNotFound();
+	}
+	return *(dynamic_cast<cxmpie_lsiinfo const*>( xmpmap.at(XMPIET_LSIINFO) ));
+}
+
+void
+cxmpies::drop_ie_lsiinfo()
+{
+	if (xmpmap.find(XMPIET_LSIINFO) == xmpmap.end()) {
+		return;
+	}
+	delete xmpmap[XMPIET_LSIINFO];
+	xmpmap.erase(XMPIET_LSIINFO);
+}
+
 
 bool
 cxmpies::has_ie_lsiname() const

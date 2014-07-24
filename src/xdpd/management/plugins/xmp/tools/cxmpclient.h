@@ -76,6 +76,9 @@ public:
 	void
 	lsi_list();
 
+	void
+	lsi_info();
+
 	/**
 	 *
 	 */
